@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Agent Kanban PM{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>Dashboard</h2>
+    <p class="text-secondary">Welcome to your project management dashboard</p>
+</div>
+
+<!-- Stats Overview -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_projects }}</div>
+        <div class="stat-label">Total Projects</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_tasks }}</div>
+        <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.completed_tasks }}</div>
+        <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.total_entities }}</div>
+        <div class="stat-label">Team Members</div>
+    </div>
+</div>
+
+<!-- Recent Projects -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Recent Projects</h3>
+        <a href="/ui/projects" class="btn btn-primary">View All</a>
+    </div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Status</th>
+                    <th>Tasks</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in recent_projects %}
+                <tr>
+                    <td>
+                        <strong>{{ project.name }}</strong><br>
+                        <small class="text-secondary">{{ project.description[:50] }}...</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ project.approval_status }}">
+                            {{ project.approval_status }}
+                        </span>
+                    </td>
+                    <td>{{ project.task_count }} tasks</td>
+                    <td>{{ project.created_at.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Recent Tasks -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Recent Tasks</h3>
+        <a href="/tasks" class="btn btn-primary">View All</a>
+    </div>
+    <div class="grid">
+        {% for task in recent_tasks %}
+        <div class="kanban-task">
+            <div class="mb-2">
+                <strong>{{ task.title }}</strong>
+            </div>
+            <div class="mb-2">
+                <span class="badge badge-{{ task.status }}">{{ task.status }}</span>
+                <span class="badge">Priority: {{ task.priority }}</span>
+            </div>
+            <div class="text-secondary">
+                <small>{{ task.description[:80] }}...</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

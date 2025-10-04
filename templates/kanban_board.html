@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} - Kanban Board{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="/ui/projects" class="btn">← Back to Projects</a>
+    <h2>{{ project.name }}</h2>
+    <p class="text-secondary">{{ project.description }}</p>
+    <span class="badge badge-{{ project.approval_status }}">{{ project.approval_status }}</span>
+</div>
+
+<!-- Kanban Board -->
+<div class="kanban-board">
+    {% for stage in project.stages %}
+    <div class="kanban-column">
+        <div class="kanban-column-header">
+            {{ stage.name }}
+            <span class="badge">{{ stage.tasks|length }}</span>
+        </div>
+        
+        {% for task in stage.tasks %}
+        <div class="kanban-task">
+            <div class="mb-2">
+                <strong>{{ task.title }}</strong>
+            </div>
+            
+            <div class="mb-2">
+                <span class="badge badge-{{ task.status }}">{{ task.status }}</span>
+                {% if task.priority > 5 %}
+                <span class="badge badge-warning">High Priority</span>
+                {% endif %}
+            </div>
+            
+            {% if task.description %}
+            <div class="mb-2 text-secondary">
+                <small>{{ task.description[:60] }}{% if task.description|length > 60 %}...{% endif %}</small>
+            </div>
+            {% endif %}
+            
+            {% if task.assignees %}
+            <div class="mb-2">
+                <small><strong>Assigned to:</strong></small><br>
+                {% for assignee in task.assignees %}
+                <span class="badge badge-{{ assignee.entity_type }}">
+                    {{ assignee.name }}
+                </span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if task.required_skills %}
+            <div>
+                <small><strong>Skills:</strong> {{ task.required_skills }}</small>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        {% if not stage.tasks %}
+        <div class="text-center text-secondary" style="padding: 2rem;">
+            <small>No tasks in this stage</small>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

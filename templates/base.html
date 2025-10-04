@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agent Kanban PM{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/theme.js"></script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Theme and Layout Controls -->
+    <div class="preferences-bar">
+        <div class="container">
+            <div class="preferences-controls">
+                <div class="theme-switcher">
+                    <button id="theme-toggle" class="btn-icon" title="Toggle theme">
+                        <span class="icon">🌙</span>
+                    </button>
+                    <span class="label">Theme</span>
+                </div>
+                <div class="view-switcher">
+                    <button id="view-toggle" class="btn-icon" title="Toggle view">
+                        <span class="icon">📊</span>
+                    </button>
+                    <span class="label">View</span>
+                </div>
+                <div class="density-switcher">
+                    <select id="density-select" class="select-small">
+                        <option value="comfortable">Comfortable</option>
+                        <option value="compact">Compact</option>
+                        <option value="spacious">Spacious</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🤖 Agent Kanban PM</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="{% if request.url.path == '/' %}active{% endif %}">Dashboard</a></li>
+                <li><a href="/ui/projects" class="{% if '/projects' in request.url.path %}active{% endif %}">Projects</a></li>
+                <li><a href="/docs" target="_blank">API Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Agent Kanban PM - Platform Agnostic Project Management</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
